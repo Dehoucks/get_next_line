@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: robindehouck <robindehouck@student.42.f    +#+  +:+       +#+        */
+/*   By: rdehouck <rdehouck@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/17 19:16:23 by robindehouc       #+#    #+#             */
-/*   Updated: 2021/11/22 17:58:26 by robindehouc      ###   ########.fr       */
+/*   Created: 2021/11/15 17:18:26 by rdehouck          #+#    #+#             */
+/*   Updated: 2021/11/18 11:41:53 by rdehouck         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
-# define BUFF_SIZE 32
+#include "libft.h"
 
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
+void	ft_striteri(char *s, void (*f) (unsigned int, char*))
+{
+	unsigned int	i;
 
-#endif
+	i = 0;
+	while (s[i])
+	{
+		f(i, &s[i]);
+		i++;
+	}
+}

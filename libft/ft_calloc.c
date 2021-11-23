@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: robindehouck <robindehouck@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/17 19:16:23 by robindehouc       #+#    #+#             */
-/*   Updated: 2021/11/22 17:58:26 by robindehouc      ###   ########.fr       */
+/*   Created: 2021/11/11 18:24:36 by robindehouc       #+#    #+#             */
+/*   Updated: 2021/11/11 22:58:55 by robindehouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
-# define BUFF_SIZE 32
+#include "libft.h"
 
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
+void	*ft_calloc(size_t nelements, size_t byte_size)
+{
+	void	*p;
 
-#endif
+	p = malloc(nelements * byte_size);
+	if (p == NULL)
+		return (NULL);
+	ft_bzero(p, nelements * byte_size);
+	return (p);
+}
+
+/*
+int main()
+{
+	char	*bonjour;
+
+	bonjour = "0123456789000000000";
+	bonjour = (char *)ft_calloc(10, 1);
+	printf("%s", bonjour);
+}*/

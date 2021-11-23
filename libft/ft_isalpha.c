@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: robindehouck <robindehouck@student.42.f    +#+  +:+       +#+        */
+/*   By: rdehouck <rdehouck@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/17 19:16:23 by robindehouc       #+#    #+#             */
-/*   Updated: 2021/11/22 17:58:26 by robindehouc      ###   ########.fr       */
+/*   Created: 2021/11/02 15:37:21 by rdehouck          #+#    #+#             */
+/*   Updated: 2021/11/10 13:23:35 by rdehouck         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
-# define BUFF_SIZE 32
+#include "libft.h"
 
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
-
-#endif
+int	ft_isalpha(int n)
+{
+	return ((n >= 'a' && n <= 'z')
+		|| (n >= 'A' && n <= 'Z'));
+}

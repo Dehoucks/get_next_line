@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: robindehouck <robindehouck@student.42.f    +#+  +:+       +#+        */
+/*   By: rdehouck <rdehouck@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/17 19:16:23 by robindehouc       #+#    #+#             */
-/*   Updated: 2021/11/22 17:58:26 by robindehouc      ###   ########.fr       */
+/*   Created: 2021/11/03 11:36:10 by rdehouck          #+#    #+#             */
+/*   Updated: 2021/11/10 13:16:49 by rdehouck         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
-# define BUFF_SIZE 32
+#include "libft.h"
 
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
 
-#endif
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	return (i);
+}
