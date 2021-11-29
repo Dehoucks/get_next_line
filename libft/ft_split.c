@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdehouck <rdehouck@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: robindehouck <robindehouck@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:17:13 by robindehouc       #+#    #+#             */
-/*   Updated: 2021/11/18 14:18:41 by rdehouck         ###   ########lyon.fr   */
+/*   Updated: 2021/11/28 22:11:09 by robindehouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

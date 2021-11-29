@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rdehouck <rdehouck@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: robindehouck <robindehouck@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:40:31 by robindehouc       #+#    #+#             */
-/*   Updated: 2021/11/24 16:30:59 by rdehouck         ###   ########lyon.fr   */
+/*   Updated: 2021/11/29 09:56:18 by robindehouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int get_next_line(const int fd, char **line)
 	if (!temp)
 		return (-1);
 		i = 0;
-	while ((read(fd, temp, BUFF_SIZE)) > 0) //change while to if for the real test
+	if ((read(fd, temp, BUFF_SIZE)) > 0) //change while to if for the real test
 	{
 		if (i != 0)
 			temp = malloc(sizeof(char) * BUFF_SIZE + 1);
@@ -127,7 +127,7 @@ int get_next_line(const int fd, char **line)
 	}
 	stocker[ft_strlen(stocker)] = 0;
 	printf("\n\n\nstocker : %s \n", stocker);
-	//line = ft_getline(line,(char*) stocker);
+	//line = ft_getline(&line,(char*) stocker);
 	//stocker = ft_removeline((char*) stocker);
 	return (1);
 }
