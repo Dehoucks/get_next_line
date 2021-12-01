@@ -6,68 +6,39 @@
 /*   By: robindehouck <robindehouck@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:40:31 by robindehouc       #+#    #+#             */
-/*   Updated: 2021/11/29 09:56:18 by robindehouc      ###   ########.fr       */
+/*   Updated: 2021/12/02 00:08:09 by robindehouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "libft/libft.h"
 
-void	ft_bzero(void *string, int byte_length)
-{
-	int				i;
-	unsigned char	*c;
 
-	c = string;
-	i = 0;
-	while (i < byte_length)
-	{
-		c[i] = 0;
-		i++;
-	}
-}
-
-size_t	ft_strlen(const char *str)
+static char	*ft_newstrjoin(char *left_str, char *buff)
 {
 	size_t	i;
+	size_t	j;
+	char	*str;
 
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i])
+	if (!left_str)
 	{
-		i++;
+		left_str = (char *)malloc(1 * sizeof(char));
+		left_str[0] = '\0';
 	}
-	return (i);
-}
-
-char	*ft_strjoin(char const *source1, char const *source2)
-{
-	char	*joined;
-	int		length;
-	int		i;
-	int		j;
-
-	if (!source2)
+	if (!left_str || !buff)
 		return (NULL);
-	i = 0;
+	str = malloc(sizeof(char) * ((ft_strlen(left_str) + ft_strlen(buff)) + 1));
+	if (str == NULL)
+		return (NULL);
+	i = -1;
 	j = 0;
-	length = ft_strlen(source1) + ft_strlen(source2);
-	joined = malloc(sizeof(joined) + length + 1);
-	if (!(joined))
-		return (NULL);
-	while (source1 && source1[i])
-	{
-		joined[i] = source1[i];
-		i++;
-	}
-	while (source2[j])
-	{
-		joined[i] = source2[j++];
-		i++;
-	}
-	joined[i] = 0;
-	return (joined);
+	if (left_str)
+		while (left_str[++i] != '\0')
+			str[i] = left_str[i];
+	while (buff[j] != '\0')
+		str[i++] = buff[j++];
+	str[ft_strlen(left_str) + ft_strlen(buff)] = '\0';
+	free(left_str);
+	return (str);
 }
 
 char*	ft_removeline(char* stocker)
@@ -75,79 +46,103 @@ char*	ft_removeline(char* stocker)
 	int		i;
 	int		j;
 	char*	temp;
+	int		start;
 
 	i = 0;
 	j = 0;
-	while (stocker[i] != '\n')
-	{
+	while (stocker[i] != '\n' && stocker[i])
 		i++;
-	}
-	i++;
+	start = i;
+	while (stocker[i])
+		i++;
+	temp = malloc(sizeof(char) * i - start);
+	if (!temp)
+		return (NULL);
+	temp[i - start] = 0; 
 	while (stocker[i])
 	{
-		temp[j++] = stocker[i++];
+		temp[j] = stocker[start];
+		j++;
+		start++;
 	}
-	temp[j] = '\0';
+	free(stocker);
 	return (temp);
 }
 
-char*	ft_getline(char *line, char* source)
+char*	ft_getline(char* source, char* line)
 {
 	int	i;
-
+	
+	if (!source[0])
+		return (NULL);
 	i = 0;
-	while (source[i] != '\n')
+	while (source[i] != '\n' && source[i])
+		i++;
+	i++;
+	line = malloc (sizeof(char) * i + 2);
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (source[i] != '\n' && source[i])
 	{
-		(line)[i] = source[i];
+		line[i] = source[i];
+		i++;
 	}
+	line[i] = source[i];
+	i++;
+	line[i] = 0;
 	return (line);
 }
 
-int get_next_line(const int fd, char **line)
+char*	AddingBuffToStock(char* stocker, int fd)
+{
+	char	*buffer;
+	int		bytesRead;
+
+	bytesRead = 1;
+	while (!ft_strchr(stocker, '\n') && bytesRead != 0)
+	{
+		buffer = malloc(sizeof(char) * BUFF_SIZE + 1);
+		if (!buffer)
+			return (NULL);
+		bytesRead = read(fd, buffer, BUFF_SIZE);
+		if (bytesRead < 0)
+		{
+			free(buffer);
+			return (NULL);	
+		}
+		buffer[bytesRead] = 0;
+		stocker = ft_newstrjoin(stocker, buffer);
+		free(buffer);
+	}
+	return (stocker);
+}
+char* get_next_line(const int fd, char **line)
 {
 	static char	*stocker;
-	int			i;
-	char		*temp;
+	char		*myline;
 
 	if (fd < 0 || BUFF_SIZE < 1)
-		return (-1);
-	temp = malloc(sizeof(char) * BUFF_SIZE + 1);
-	if (!temp)
-		return (-1);
-		i = 0;
-	if ((read(fd, temp, BUFF_SIZE)) > 0) //change while to if for the real test
-	{
-		if (i != 0)
-			temp = malloc(sizeof(char) * BUFF_SIZE + 1);
-		i++;
-		stocker = ft_strjoin(stocker, temp);
-		printf("%s\n", temp);
-		free(temp);
-		ft_bzero(temp, BUFF_SIZE);
-	}
-	stocker[ft_strlen(stocker)] = 0;
-	printf("\n\n\nstocker : %s \n", stocker);
-	//line = ft_getline(&line,(char*) stocker);
-	//stocker = ft_removeline((char*) stocker);
-	return (1);
+		return (NULL);
+	stocker = AddingBuffToStock(stocker, fd);
+	if (!stocker)
+		return (NULL);
+	myline = ft_getline(stocker, myline);
+	stocker = ft_removeline(stocker);
+	return (myline);
 }
 
-int main(void)
+int   main(int ac, char **av)
 {
-    int filedesc = open("testfile.txt", O_RDWR, S_IRUSR | S_IWUSR);
-	int	i = 0;
-	char		*temp;
-	temp = malloc(sizeof(char) * BUFF_SIZE + 1);
+  char  *line;
+  int   fd1;
+  int   fd2;
+	int i;
 
-    if (filedesc < 0) {
-        return -1;
-    }
-	/*
-	i = read(filedesc, temp, BUFF_SIZE);
-	printf("%d", i);
-	*/
-	char	**line;
+	i = 0;
+  fd1 = open("text.txt", O_RDONLY);
+  while ((line = get_next_line(fd1, &line)) != NULL)
+	printf("%s", line);
 
-	get_next_line(filedesc, line);
-	i++;
+  return (0);
 }
