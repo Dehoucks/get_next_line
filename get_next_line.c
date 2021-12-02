@@ -6,7 +6,7 @@
 /*   By: robindehouck <robindehouck@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 16:40:31 by robindehouc       #+#    #+#             */
-/*   Updated: 2021/12/02 00:08:09 by robindehouc      ###   ########.fr       */
+/*   Updated: 2021/12/02 13:46:15 by robindehouc      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,24 @@ char*	ft_removeline(char* stocker)
 	int		i;
 	int		j;
 	char*	temp;
-	int		start;
+
 
 	i = 0;
 	j = 0;
 	while (stocker[i] != '\n' && stocker[i])
 		i++;
-	start = i;
-	while (stocker[i])
-		i++;
-	temp = malloc(sizeof(char) * i - start);
+	if (!stocker[i])
+	{
+		free(stocker);
+		return (NULL);
+	}	
+	temp = malloc(sizeof(char) * (ft_strlen(stocker) - i) + 1);
 	if (!temp)
 		return (NULL);
-	temp[i - start] = 0; 
+	i++;
 	while (stocker[i])
-	{
-		temp[j] = stocker[start];
-		j++;
-		start++;
-	}
+		temp[j++] = stocker[i++];
+	temp[j] = 0;
 	free(stocker);
 	return (temp);
 }
@@ -102,10 +101,10 @@ char*	AddingBuffToStock(char* stocker, int fd)
 	bytesRead = 1;
 	while (!ft_strchr(stocker, '\n') && bytesRead != 0)
 	{
-		buffer = malloc(sizeof(char) * BUFF_SIZE + 1);
-		if (!buffer)
+	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buffer)
 			return (NULL);
-		bytesRead = read(fd, buffer, BUFF_SIZE);
+		bytesRead = read(fd, buffer, BUFFER_SIZE);
 		if (bytesRead < 0)
 		{
 			free(buffer);
@@ -117,12 +116,13 @@ char*	AddingBuffToStock(char* stocker, int fd)
 	}
 	return (stocker);
 }
-char* get_next_line(const int fd, char **line)
+char* get_next_line(const int fd)
 {
 	static char	*stocker;
 	char		*myline;
 
-	if (fd < 0 || BUFF_SIZE < 1)
+	myline = NULL;
+	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	stocker = AddingBuffToStock(stocker, fd);
 	if (!stocker)
@@ -131,7 +131,7 @@ char* get_next_line(const int fd, char **line)
 	stocker = ft_removeline(stocker);
 	return (myline);
 }
-
+/*
 int   main(int ac, char **av)
 {
   char  *line;
@@ -141,8 +141,8 @@ int   main(int ac, char **av)
 
 	i = 0;
   fd1 = open("text.txt", O_RDONLY);
-  while ((line = get_next_line(fd1, &line)) != NULL)
-	printf("%s", line);
-
+  //while ((line = get_next_line(fd1)) != NULL)
+	//printf("%s", line);
+	printf("%s", get_next_line(fd1)); 
   return (0);
-}
+}*/
